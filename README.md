@@ -1,46 +1,38 @@
-# A/B Test: E Commerce
-For this project, I will be working to understand the results of an A/B test run by an e-commerce website if they should implement the new page, keep the old page, or perhaps run the experiment longer to make their decision.   
+# E-commerce Landing Page A/B Test – My Analysis
 
-This project includes the following contents:
-* Introduction
-* Part I: Probability
-* Part II: A/B test
-* Part III: Regression
-* Conclusion
+This project analyzes a public e-commerce A/B test where a company tested a new landing page against the old one.  
+The goal is to understand whether the new page improves conversion and how confident we can be in that conclusion.
 
-Before Part I: Probability, I will perform data cleaning such as checking missing data, discrepancies between the columns etc.
+## What I did
 
-### Language and Package
-This project is using Python3. The packages are used in this project including Numpy, Panda, random, matplotlib.pyplot, scipy.stats, and  statsmodels.api.
+- Loaded the experiment data (`ab_data.csv`) into Python using pandas.
+- Cleaned the dataset to keep only valid assignments:
+  - control users on the `old_page`
+  - treatment users on the `new_page`
+- Defined conversion as a 0/1 flag (`converted`) and computed:
+  - conversion rate for the control group
+  - conversion rate for the treatment group
+  - the lift (difference in conversion rates)
+- Ran a two-sample proportion z-test using `statsmodels` to check if the difference is statistically significant.
+- Interpreted the p-value (~0.19) in plain English:
+  - If there were truly no difference between pages, there is about a 19% chance of seeing a difference this large just due to random variation.
+- Concluded that the new page does **not** show a statistically significant improvement in conversion and would **not** recommend rolling it out as a clear upgrade based on this test alone.
+- Added a simple bar chart of conversion by group to visualize how similar the two conversion rates are.
 
-### Metadata of variables
-1. [ab_data.csv](https://github.com/jemc36/Udacity-DAND-AB-test-ecommerce/blob/master/ab_data.csv)  
+## Causal Interpretation
 
-| Variable Name | Metadata                   |
-|---------------|----------------------------|
-| user_id       | 6-digit numbers            |
-| timestamp     | string                     |
-| group         | string: control, treatment |
-| landing_page  | string: old_page, new_page |
-| converted     | numeric: 0:No, 1:Yes       |
+Because this was designed as a randomized A/B test, assignment to control and treatment is intended to be random.  
+This strongly reduces selection bias and makes the two groups comparable on average. Under these assumptions, the difference in conversion rates can be interpreted as a causal effect of the new page.  
+Given that the estimated lift is very small and not statistically significant, we do not have strong evidence that the new page causally improves conversion.
 
-2. [countries.csv](https://github.com/jemc36/Udacity-DAND-AB-test-ecommerce/blob/master/countries.csv)  
+## Files in this repository
 
-| Variable Name | Metadata           |
-|---------------|--------------------|
-| user_id       | 6-digit numbers    |
-| country       | string: US, CA, UK |
+- `ab_data.csv` – public A/B test dataset provided by Udacity.
+- `my_analysis.ipynb` – my notebook with data cleaning, analysis, statistical test, plots, and conclusions.
+- (Optional) Other original Udacity files are kept for reference in their own folder.
 
-### Methodology
-* A/B Test
-* Two-Proportion z Test
-* Logistic Regression
+## Tech stack
 
-### Report
-The reports are generated to three formats, .ipynb, .pdf and .html:
-* [Analyze_ab_test_results_notebook_jc.ipynb](https://github.com/jemc36/Udacity-DAND-AB-test-ecommerce/blob/master/Analyze_ab_test_results_notebook_jc.ipynb)
-* [Analyze_ab_test_results_notebook_jc.pdf](https://github.com/jemc36/Udacity-DAND-AB-test-ecommerce/blob/master/Analyze_ab_test_results_notebook_jc.pdf)
-* [Analyze_ab_test_results_notebook_jc.html](https://github.com/jemc36/Udacity-DAND-AB-test-ecommerce/blob/master/Analyze_ab_test_results_notebook_jc.html)
+- **Language:** Python 3  
+- **Libraries:** pandas, matplotlib, statsmodels
 
-### Feedback from the reviewer
-* [Udacity Reviews](https://github.com/jemc36/Udacity-DAND-AB-test-ecommerce/blob/master/Udacity%20Reviews.pdf)
